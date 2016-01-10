@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="rtmp" basedir="." default="">
+	<property environment="env" />
+    <property name="project.root" value="${basedir}" />
+    <property file="build.properties" />
+	
+    <taskdef resource="flexTasks.tasks" classpath="${FLEX_TASKS}" />
+	
+	<!--编译模块-->
+	<target name="rtmp" description="编译并压缩此核心模块">
+		<echo message="================================================="/>
+		<echo message="Compile Tudou Media Player Core Module:rtmp"/>
+		<echo message="================================================="/>
+		
+		<mxmlc
+		
+			file="${SOURCE_DIR}/com/tudou/player/core/rtmp/Rtmp.as"
+			
+            output="${DEPLOY_DIR}/rtmp.swf"
+			
+			optimize="true"
+			
+			default-background-color="0x000000"
+			
+            debug="false"
+			
+			static-link-runtime-shared-libraries="true"
+			
+			static-rsls="false"
+			
+		>
+			
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			
+			<default-size width="480" height="385"/>
+			
+            <!--设置源代码位置-->
+            <source-path path-element="${SOURCE_DIR}"/>
+            <source-path path-element="${basedir}/../../custom/src"/>
+			
+			<!--设置嵌入类-->
+			<!--includes symbol="${IncludeClass}"/-->
+			
+			<!--设置动态链接类-->
+			<externs symbol="com.tudou.player.interfaces.IMediaPlayer"/>
+			<externs symbol="com.tudou.player.config.AccessDomain"/>
+			<externs symbol="com.tudou.player.core.MediaPlayStatus"/>
+			<externs symbol="com.tudou.player.events.StageVideoStatusEvent"/>
+			<externs symbol="com.tudou.player.events.NetStatusEventCode"/>
+			<externs symbol="com.tudou.player.events.NetStatusEventLevel"/>
+			<externs symbol="com.tudou.player.utils.StageProxy"/>
+			<externs symbol="com.tudou.player.utils.ProxyNetClient"/>
+			
+			<!--设置依赖库-->
+			<compiler.library-path dir="${LIB_PATH}" append="true">
+				<include name="*.swc"/>
+			</compiler.library-path>
+			
+			<!--设置动态库-->
+			<external-library-path dir="../../rsl/bin" append="true">  
+                <include name="rsl.swc" />
+            </external-library-path>
+			
+        </mxmlc>
+		
+		<!--压缩模块-->
+		<exec executable="${basedir}/../../tools/lzma/swflzmacompress.exe" failonerror="true">
+		  <arg line="${DEPLOY_DIR}/rtmp.swf"/>
+		  <arg line="--update-version"/>
+		</exec>
+	</target>
+</project>
