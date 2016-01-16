@@ -831,7 +831,6 @@ package com.tudou.player.core.rtmp
 		private var _duration:Number;
 		private var _first_buffer_full:Boolean = true;
 		
-		private var fuxiao:*;
 		private var _rotation:Number = 0.0;
 		private var _scale:Number = 1.0;
 		private var _proportion:Number;
